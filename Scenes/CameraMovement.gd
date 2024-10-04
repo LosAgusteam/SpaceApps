@@ -25,9 +25,9 @@ func _process(delta: float) -> void:
 	# Handle camera movement #
 	var direction = _handle_direction()
 	if direction == Vector3.ZERO:
-		velocity = lerp(velocity, Vector3.ZERO, delta * 4)
+		velocity = lerp(velocity, Vector3.ZERO, delta * 6)
 	if direction.length_squared() > 0:
-		velocity = lerp(velocity, velocity + direction * acceleration * delta, delta * 8)
+		velocity = lerp(velocity, velocity + direction * acceleration * delta, delta * 10)
 	if velocity.length() > move_speed:
 		velocity = velocity.normalized() * move_speed
 	

@@ -1,10 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://cbdpvdkpufisw"]
+[gd_scene load_steps=7 format=3 uid="uid://cbdpvdkpufisw"]
 
 [ext_resource type="Texture2D" uid="uid://c5xyfwn45km16" path="res://Textures/starmap_2020_4k.exr" id="1_kk0cq"]
 [ext_resource type="Script" path="res://Scripts/SystemHandler.gd" id="1_w4qli"]
-[ext_resource type="Shader" uid="uid://cq7ai06rm27o6" path="res://Materials/StarShader.tres" id="3_3a5q3"]
 [ext_resource type="Script" path="res://Scenes/CameraMovement.gd" id="3_wj4u3"]
-[ext_resource type="PackedScene" uid="uid://bhffw3dikoaut" path="res://Resources/StarFlicker.tscn" id="4_d4mlq"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ssbop"]
 panorama = ExtResource("1_kk0cq")
@@ -25,13 +23,6 @@ glow_blend_mode = 0
 fog_light_energy = 0.0
 volumetric_fog_density = 0.002
 
-[sub_resource type="SphereMesh" id="SphereMesh_xdn5w"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4g62e"]
-render_priority = 0
-shader = ExtResource("3_3a5q3")
-shader_parameter/StarColor = Color(0.929412, 0.937255, 0.792157, 1)
-
 [node name="Scene" type="Node3D"]
 script = ExtResource("1_w4qli")
 
@@ -42,13 +33,3 @@ environment = SubResource("Environment_amijh")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
 fov = 90.0
 script = ExtResource("3_wj4u3")
-
-[node name="Node3D" type="Node3D" parent="."]
-visible = false
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00859773, 0.0236931, 0.0242186)
-mesh = SubResource("SphereMesh_xdn5w")
-surface_material_override/0 = SubResource("ShaderMaterial_4g62e")
-
-[node name="GPUParticles3D" parent="Node3D" instance=ExtResource("4_d4mlq")]

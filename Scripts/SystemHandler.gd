@@ -3,7 +3,7 @@ class_name SystemHandler
 
 # SYSTEM LIST #
 var star_systems = {}
-@export var chosen_system: String = "11 Com"
+@export var chosen_system: String
 
 var root: Node3D = Node3D.new()
 
@@ -12,6 +12,11 @@ var loading_thread: Thread
 
 # MATERIALS #
 var star_shader = preload("res://Materials/StarShader.tres")
+
+# PLANET COLOR DATA #
+const V_0 = 3.63e-20
+const Ks_0 = 4.283e-21
+const Gaia_0 = 2.54e-20
 
 func ra_dec_to_xyz(ra: float, dec: float, dist: float):
 	var ra_rad = deg_to_rad(ra * 15)
@@ -30,7 +35,7 @@ func _ready():
 	root.name = "StarSystems"
 	add_child(root)
 	
-	_change_system("24 Sex")
+	_change_system("11 Com")
 
 func _change_system(new_system: String):
 	chosen_system = new_system
@@ -44,14 +49,26 @@ func _change_system(new_system: String):
 	root.add_child(system_node)
 	
 	var system_bodies: Dictionary = star_systems.get(chosen_system)
+	
 	for body_name in system_bodies:
-		var base_body: Node3D = system_bodies[body_name]
+		var base_body = system_bodies[body_name]
 		var body = base_body.duplicate()
 		system_node.add_child(body)
 		
-		$Camera3D.global_position = body.transform.origin
-		$Camera3D.global_position.z += 5
-		$Camera3D.look_at(body.transform.origin)
+		if base_body is Star3D:
+			print("estrella")
+			body.global_position = body.star_position
+			
+			$Camera3D.global_position = body.global_position
+			$Camera3D.global_position.z += 5
+			$Camera3D.look_at(body.global_position)
+		
+		elif base_body is Planet3D:
+			var center = system_bodies[body.host_star].star_position
+			var direction = Vector3(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)).normalized()
+			var distance = randf_range(body.orbit_radius / 2, body.orbit_radius) * 2.5
+			var end_pos = center + direction * distance
+			body.global_position = end_pos
 
 func _start_systems():
 	var stars = preload("res://Data/StarData.csv")
@@ -63,7 +80,7 @@ func _start_systems():
 		if not star_systems.get(star.sy_name).get(star.hostname):
 			var coords = ra_dec_to_xyz(float(star.ra), float(star.dec), float(star.sy_dist));
 			
-			var star_node = Node3D.new()
+			var star_node = Star3D.new()
 			star_node.name = star.hostname
 			
 			var mesh: MeshInstance3D = MeshInstance3D.new()
@@ -98,22 +115,23 @@ func _start_systems():
 			process_material.color = star_color
 			star_node.add_child(flicker_particle)
 			
+			star_node.star_position = Vector3(coords[0], coords[1], coords[2])
+			
 			system[star.hostname] = star_node
-			star_node.transform.origin = Vector3(coords[0], coords[1], coords[2])
 	
-	#for planet in data.records:
-		#if root.find_child(planet.hostname):
-			#var star: Node3D = root.find_child(planet.hostname)
-			#
-			#var coords = ra_dec_to_xyz(float(planet.ra), float(planet.dec), float(planet.sy_dist));
-			#
-			#var shape = Node3D.new()
-			#shape.name = planet.pl_name
-			#
-			#var mesh = MeshInstance3D.new()
-			#mesh.mesh = SphereMesh.new()
-			#mesh.mesh.radius = float(0.2)
-			#shape.add_child(mesh)
-			#
-			#star.add_child(shape)
-			#shape.global_position = Vector3(coords[0], coords[1], coords[2])
+	for planet in data.records:
+		if star_systems.get(planet.hostname):
+			var system: Dictionary = star_systems.get(planet.hostname)
+			var coords = ra_dec_to_xyz(float(planet.ra), float(planet.dec), float(planet.sy_dist));
+			
+			var planet_node = Planet3D.new()
+			planet_node.name = planet.pl_name
+			
+			var mesh = MeshInstance3D.new()
+			mesh.mesh = SphereMesh.new()
+			planet_node.add_child(mesh)
+			
+			planet_node.host_star = planet.hostname
+			planet_node.orbit_radius = float(planet.pl_orbsmax)
+			
+			system[planet.pl_name] = planet_node
