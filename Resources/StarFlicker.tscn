@@ -1,0 +1,42 @@
+[gd_scene load_steps=9 format=3 uid="uid://bhffw3dikoaut"]
+
+[ext_resource type="Texture2D" uid="uid://cds0l7fu5n0bm" path="res://Textures/Stars/Flare00.PNG" id="1_licl8"]
+
+[sub_resource type="Curve" id="Curve_bbbh5"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.505906, 0.140094), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_asruk"]
+curve = SubResource("Curve_bbbh5")
+
+[sub_resource type="Curve" id="Curve_64ny2"]
+_data = [Vector2(0.0113269, 0.632258), 0.0, 0.0, 0, 0, Vector2(0.494095, 0.691732), 0.0, 0.0, 0, 0, Vector2(1, 0.625806), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_8l8e1"]
+curve = SubResource("Curve_64ny2")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_371f2"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+scale_min = 1.83
+scale_max = 2.17
+scale_curve = SubResource("CurveTexture_8l8e1")
+alpha_curve = SubResource("CurveTexture_asruk")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6n2bt"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_licl8")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_8jtfp"]
+material = SubResource("StandardMaterial3D_6n2bt")
+orientation = 2
+
+[node name="GPUParticles3D" type="GPUParticles3D"]
+amount = 3
+local_coords = true
+transform_align = 1
+process_material = SubResource("ParticleProcessMaterial_371f2")
+draw_pass_1 = SubResource("PlaneMesh_8jtfp")
