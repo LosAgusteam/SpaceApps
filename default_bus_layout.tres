@@ -1,0 +1,41 @@
+[gd_resource type="AudioBusLayout" load_steps=5 format=3 uid="uid://cbnw8cn0tvc7y"]
+
+[sub_resource type="AudioEffectEQ" id="AudioEffectEQ_fvtg4"]
+resource_name = "EQ"
+band_db/3200_hz = -21.5
+band_db/10000_hz = -28.3
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_70q6p"]
+resource_name = "Reverb"
+room_size = 1.0
+dry = 0.7
+wet = 0.35
+
+[sub_resource type="AudioEffectEQ" id="AudioEffectEQ_sj31m"]
+resource_name = "EQ"
+band_db/1000_hz = -7.2
+band_db/3200_hz = -16.8
+band_db/10000_hz = -31.2
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_3kipk"]
+resource_name = "Reverb"
+room_size = 1.0
+damping = 0.57
+wet = 0.71
+
+[resource]
+bus/0/volume_db = -2.11252
+bus/0/effect/0/effect = SubResource("AudioEffectEQ_fvtg4")
+bus/0/effect/0/enabled = true
+bus/0/effect/1/effect = SubResource("AudioEffectReverb_70q6p")
+bus/0/effect/1/enabled = true
+bus/1/name = &"MainBus"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = -37.0789
+bus/1/send = &"Master"
+bus/1/effect/0/effect = SubResource("AudioEffectEQ_sj31m")
+bus/1/effect/0/enabled = true
+bus/1/effect/1/effect = SubResource("AudioEffectReverb_3kipk")
+bus/1/effect/1/enabled = true
