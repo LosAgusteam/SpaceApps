@@ -28,7 +28,6 @@ func calculate_pitch(mass: float, min_mass: float = 0.000001, max_mass: float = 
 	# Calcular el valor inversamente proporcional entre 1 y 28
 	# Queremos que la masa mínima dé el valor máximo (28) y la masa máxima dé el valor mínimo (1)
 	var pitch = 28 - ((mass - min_mass) / (max_mass - min_mass)) * (28 - 1)
-	print(pitch)
 	# Redondeamos el resultado y lo convertimos en entero
 	return int(round(pitch))
 
@@ -44,7 +43,6 @@ func calculate_timber(radius: float, min_radius: float = 1000.0, max_radius: flo
 	# Calcular el valor inversamente proporcional entre 1 y 28
 	# Queremos que la masa mínima dé el valor máximo (28) y la masa máxima dé el valor mínimo (1)
 	var timber = sounds_array.size() - ((radius - min_radius) / (max_radius - min_radius)) * (sounds_array.size() - 1)
-	print(timber)
 	# Redondeamos el resultado y lo convertimos en entero
 	return int(round(timber) - 1)
 
@@ -62,7 +60,6 @@ func random_timber()->int:
 
 func get_audio_file(pitch: float, library: int) -> String:
 	# Assuming the audio files are named based on the pitch value
-	print("TImbre: ", sounds_array[library])
 	#return "res://Sounds/ritmicos/" + str(pitch) + ".wav"
 	return "res://Sounds/" + sounds_array[library] + "/" + str(pitch) + ".wav"
 	
