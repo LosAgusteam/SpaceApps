@@ -13,6 +13,7 @@ var loading_thread: Thread
 # MATERIALS #
 var star_shader = preload("res://Materials/StarShader.tres")
 var rocky_planet_shader = preload("res://Materials/RockPlanetShader.tres")
+var gas_planet_shader = preload("res://Materials/GasPlanetShader.tres")
 var orbit_shader = preload("res://Materials/OrbitShader.gdshader")
 
 # SOUNDS # 
@@ -265,7 +266,11 @@ func _start_systems():
 			planet_node.add_child(mesh)
 			
 			var planet_material: ShaderMaterial = ShaderMaterial.new()
-			planet_material.shader = rocky_planet_shader
+			
+			if float(planet.pl_bmassj) < 1:
+				planet_material.shader = rocky_planet_shader
+			else:
+				planet_material.shader = gas_planet_shader
 			
 			var V_flux = _mag_to_flux(float(planet.sy_vmag), V_0)
 			var Ks_flux = _mag_to_flux(float(planet.sy_kmag), Ks_0)
