@@ -4,11 +4,13 @@ class_name SystemHandler
 # SYSTEM LIST #
 var star_systems = {}
 @export var chosen_system: String
-
 var root: Node3D = Node3D.new()
 
 # THREADS #
 var loading_thread: Thread
+
+# VR INTERFACE #
+var interface: XRInterface
 
 # MATERIALS #
 var star_shader = preload("res://Materials/StarShader.tres")
@@ -101,6 +103,11 @@ func _ready():
 	loading_thread.start(_start_systems)
 	loading_thread.wait_to_finish()
 	
+	# Start VR
+	interface = XRServer.find_interface("OpenXR")
+	if interface and interface.is_initialized():
+		get_viewport().use_xr = true
+	
 	for system_name in star_systems.keys():
 		$HUD/SystemPanel/OptionButton.add_item(system_name)
 	
@@ -122,8 +129,7 @@ func _ready():
 	#audio_player_waves.volume_db = -50  # Ajustar volumen (-10 dB)
 	audio_player_waves.play()
 	
-	#_change_system("11 Com")
-	_change_system("24 Sex")
+	_change_system("11 Com")
 
 func _change_system(new_system: String):
 	chosen_system = new_system
@@ -151,9 +157,9 @@ func _change_system(new_system: String):
 					audio_player.play()
 			
 			body.global_position = body.star_position
-			$Camera3D.global_position = body.global_position
-			$Camera3D.global_position.z += 5
-			$Camera3D.look_at(body.global_position)
+			$VRCamera.global_position = body.global_position
+			$VRCamera.global_position.z += 5
+			$VRCamera.look_at(body.global_position)
 		
 		elif base_body is Planet3D:
 			var center: Vector3 = system_bodies[body.host_star].star_position
@@ -277,8 +283,6 @@ func _start_systems():
 			var R_norm = Gaia_flux / max_flux
 			var G_norm = V_flux / max_flux
 			var B_norm = Ks_flux / max_flux
-			
-			print(int(R_norm * 255), int(G_norm * 255), int(B_norm * 255))
 			
 			var planet_color = Color(int(R_norm * 255), int(G_norm * 255), int(B_norm * 255))
 			planet_material.set_shader_parameter("PlanetColor", planet_color.darkened(0.99))

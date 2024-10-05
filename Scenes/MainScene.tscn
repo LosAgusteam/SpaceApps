@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://c5xyfwn45km16" path="res://Textures/starmap_2020_4k.exr" id="1_kk0cq"]
 [ext_resource type="Script" path="res://Scripts/SystemHandler.gd" id="1_w4qli"]
-[ext_resource type="Script" path="res://Scenes/CameraMovement.gd" id="3_wj4u3"]
+[ext_resource type="Script" path="res://Scripts/CameraMovement.gd" id="3_wj4u3"]
 [ext_resource type="FontFile" uid="uid://bfijaqqo40i04" path="res://Fonts/architxt.ttf" id="4_iuahx"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ssbop"]
@@ -38,10 +38,12 @@ script = ExtResource("1_w4qli")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_amijh")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
-fov = 90.0
+[node name="VRCamera" type="Node3D" parent="."]
 script = ExtResource("3_wj4u3")
+
+[node name="XROrigin3D" type="XROrigin3D" parent="VRCamera"]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="VRCamera/XROrigin3D"]
 
 [node name="HUD" type="Control" parent="."]
 layout_mode = 3

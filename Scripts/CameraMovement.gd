@@ -1,4 +1,4 @@
-extends Camera3D
+extends Node3D
 
 @export var acceleration: float = 25.0
 @export var move_speed: float = 5.0
@@ -8,9 +8,10 @@ var velocity: Vector3 = Vector3.ZERO
 var look_angles: Vector2 = Vector2.ZERO
 
 func _input(event: InputEvent) -> void:
-	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		if event is InputEventMouseMotion:
-			look_angles -= event.relative / sensibility
+	if get_viewport().use_xr == false:
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+			if event is InputEventMouseMotion:
+				look_angles -= event.relative / sensibility
 
 func _process(delta: float) -> void:
 	look_angles.y = clamp(look_angles.y, PI / -2, PI / 2)
