@@ -21,8 +21,8 @@ band_db/10000_hz = -31.2
 resource_name = "Reverb"
 room_size = 1.0
 damping = 0.57
-dry = 0.7
-wet = 0.51
+dry = 0.4
+wet = 0.35
 
 [resource]
 bus/0/volume_db = -2.11252

@@ -119,14 +119,14 @@ func _ready():
 	add_child(audio_player_hyperdrive)
 	audio_player_hyperdrive.stream = load("res://Sounds/ambient/hyperdrive.mp3")
 	audio_player_hyperdrive.bus = "MainBus"  # Asignar el bus
-	#audio_player_hyperdrive.volume_db = -50  # Ajustar volumen (-10 dB)
+	audio_player_hyperdrive.volume_db = -20  # Ajustar volumen (-10 dB)
 	audio_player_hyperdrive.play()
 
 	audio_player_waves = AudioStreamPlayer.new()
 	add_child(audio_player_waves)
 	audio_player_waves.stream = load("res://Sounds/ambient/waves.mp3")
 	audio_player_waves.bus = "MainBus"  # Asignar el bus
-	#audio_player_waves.volume_db = -50  # Ajustar volumen (-10 dB)
+	audio_player_waves.volume_db = -20  # Ajustar volumen (-10 dB)
 	audio_player_waves.play()
 	
 	_change_system("11 Com")
@@ -217,7 +217,7 @@ func _start_systems():
 			star_audio.stream = load(get_audio_file(star_pitch, star_timber)) # Assign the .wav file based on pitch
 			star_audio.autoplay = false # Disable autoplay
 			star_audio.max_distance = 2000 # Set max audible distance
-			star_audio.volume_db = -10 # Lower the volume
+			star_audio.volume_db = -5 # Lower the volume
 			star_audio.unit_size = 1.0 # Control sound attenuation
 			star_node.add_child(star_audio)
 			var star_color: Color = Color("EDEFCA")
@@ -295,7 +295,7 @@ func _start_systems():
 			planet_audio.stream = load(get_audio_file(planet_pitch, planet_timber)) # Assign the .wav file based on pitch
 			planet_audio.autoplay = false # Disable autoplay
 			planet_audio.max_distance = 2000 # Set max audible distance
-			planet_audio.volume_db = -10 # Lower the volume
+			planet_audio.volume_db = -5 # Lower the volume
 			planet_audio.unit_size = 1.0 # Control sound attenuation
 			planet_node.add_child(planet_audio)
 			planet_node.host_star = planet.hostname
